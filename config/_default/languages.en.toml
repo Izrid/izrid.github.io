@@ -12,3 +12,4 @@ dateFormat = "2 January 2006"
 [author]
 name = "Izrid"
 image = "Ye.png"
+links = [ { github = "https://github.com/Izrid/izrid.github.io" } ]

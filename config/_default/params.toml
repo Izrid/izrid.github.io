@@ -37,7 +37,7 @@ defaultBackgroundImage = "htp.png" # used as default for background images
 
 [homepage]
   layout = "background" # valid options: page, profile, hero, card, background, custom
-  homepageImage = "htp.jpg" # used in: hero, and card
+  homepageImage = "htp.png" # used in: hero, and card
   showRecent = true
   showRecentItems = 5
   showMoreLink = false

@@ -1,23 +1,21 @@
 ---
-title: "tldr please summarise"
+title: "back to the jungle"
 date: 2024-07-21
 draft: false
 # description: ""
-tags: ["misc"]
+tags: ["osint"]
 ---
 
-**Challenge Description:** I thought I was being 1337 by asking AI to help me solve challenges, now I have to reinstall Windows again. Can you help me out by find the flag in this document?
+**Challenge Description:** Did MC Fat Monke just drop a new track????? 👀👀👀
 
-**Solving Process:** We're given a file labelled `EmuWar.docx` to download. If we try to use `less` we're told that it may be a binary file, which seems a bit odd
+**Solving Process:** This was a straight forward solve, though since it has great audio I thought to include it here
 
-![screenshot of less command on EmuWar.docx](./Assets/less_emu.png) 
+Searching for `MC Fat Monke` on YouTube led to the below video
 
-Let's use `xxd` combined with `head` to get the [magic numbers](https://en.wikipedia.org/wiki/List_of_file_signatures) of the file to see if the file is actually something else. Looking at the output below and checking Wikipedia, we can see that it's actually a zipped file!
 
-![screenshot of xxd command on EmuWar.docx](./Assets/xxd_emu_head.png) 
+<iframe width="560" height="315" src="https://www.youtube.com/embed/jmhn3IMLQyM?si=xaOSoYE_-1XKri57" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 
-Using `unzip EmuWar.docx` we're given a couple of folders and a few files. I went straight to `word/document.xml` and saw what I assumed was a good story (it was too long, so I didn't read). Buried inside were some commands however, specifically `curl -sL https://pastebin.com/raw/ysYcKmbu | base64 -d`. What happends if we run it?
+After jamming out a few times, there is a frame in the video that holds what seems like a valid URL https://average-primate-th.wixsite.com/mc-fat-monke-appreci
 
-![Emu curl strong](./Assets/curl_emu.png) 
 
-**Flag:**`DUCTF{chatgpt_I_n33d_2_3scap3}`
+**Flag:**`DUCTF{wIr_G0iNg_b4K_t00_d3r_jUNgL3_mIt_d15_1!!111!}`

@@ -2,120 +2,120 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>izrid.github.io</title>
-    <link>http://localhost:1313/</link>
+    <link>https://example.org/</link>
     <description>Recent content on izrid.github.io</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
     <copyright>© 2025 Izrid</copyright>
-    <lastBuildDate>Sun, 21 Jul 2024 00:00:00 +0000</lastBuildDate><atom:link href="http://localhost:1313/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Sun, 21 Jul 2024 00:00:00 +0000</lastBuildDate><atom:link href="https://example.org/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>back to the jungle</title>
-      <link>http://localhost:1313/writeups/ductf2024/back-to-the-jungle/</link>
+      <link>https://example.org/writeups/ductf2024/back-to-the-jungle/</link>
       <pubDate>Sun, 21 Jul 2024 00:00:00 +0000</pubDate>
       
-      <guid>http://localhost:1313/writeups/ductf2024/back-to-the-jungle/</guid>
+      <guid>https://example.org/writeups/ductf2024/back-to-the-jungle/</guid>
       <description>Challenge Description: Did MC Fat Monke just drop a new track?</description>
-      <media:content xmlns:media="http://search.yahoo.com/mrss/" url="http://localhost:1313/writeups/ductf2024/back-to-the-jungle/featured.png" />
+      <media:content xmlns:media="http://search.yahoo.com/mrss/" url="https://example.org/writeups/ductf2024/back-to-the-jungle/featured.png" />
     </item>
     
     <item>
       <title>Sun Zi&#39;s Perfect Math Class</title>
-      <link>http://localhost:1313/writeups/ductf2024/sun-zis-perfect-math-class/</link>
+      <link>https://example.org/writeups/ductf2024/sun-zis-perfect-math-class/</link>
       <pubDate>Sun, 21 Jul 2024 00:00:00 +0000</pubDate>
       
-      <guid>http://localhost:1313/writeups/ductf2024/sun-zis-perfect-math-class/</guid>
+      <guid>https://example.org/writeups/ductf2024/sun-zis-perfect-math-class/</guid>
       <description>Challenge Description: Everybody, Sunzi&amp;rsquo;s math class is about to begin!</description>
-      <media:content xmlns:media="http://search.yahoo.com/mrss/" url="http://localhost:1313/writeups/ductf2024/sun-zis-perfect-math-class/featured.png" />
+      <media:content xmlns:media="http://search.yahoo.com/mrss/" url="https://example.org/writeups/ductf2024/sun-zis-perfect-math-class/featured.png" />
     </item>
     
     <item>
       <title>tldr please summarise</title>
-      <link>http://localhost:1313/writeups/ductf2024/tldr-please-summarise/</link>
+      <link>https://example.org/writeups/ductf2024/tldr-please-summarise/</link>
       <pubDate>Sun, 21 Jul 2024 00:00:00 +0000</pubDate>
       
-      <guid>http://localhost:1313/writeups/ductf2024/tldr-please-summarise/</guid>
+      <guid>https://example.org/writeups/ductf2024/tldr-please-summarise/</guid>
       <description>Challenge Description: I thought I was being 1337 by asking AI to help me solve challenges, now I have to reinstall Windows again.</description>
-      <media:content xmlns:media="http://search.yahoo.com/mrss/" url="http://localhost:1313/writeups/ductf2024/tldr-please-summarise/featured.png" />
+      <media:content xmlns:media="http://search.yahoo.com/mrss/" url="https://example.org/writeups/ductf2024/tldr-please-summarise/featured.png" />
     </item>
     
     <item>
       <title>Wacky Recipe</title>
-      <link>http://localhost:1313/writeups/ductf2024/wacky-recipe/</link>
+      <link>https://example.org/writeups/ductf2024/wacky-recipe/</link>
       <pubDate>Sun, 21 Jul 2024 00:00:00 +0000</pubDate>
       
-      <guid>http://localhost:1313/writeups/ductf2024/wacky-recipe/</guid>
+      <guid>https://example.org/writeups/ductf2024/wacky-recipe/</guid>
       <description>Challenge Description: Our Cyber Chef has been creating some wacky recipes recently, though he has been rather protective of his secret ingredients.</description>
-      <media:content xmlns:media="http://search.yahoo.com/mrss/" url="http://localhost:1313/writeups/ductf2024/wacky-recipe/featured.png" />
+      <media:content xmlns:media="http://search.yahoo.com/mrss/" url="https://example.org/writeups/ductf2024/wacky-recipe/featured.png" />
     </item>
     
     <item>
       <title>Test Post Please Ignore</title>
-      <link>http://localhost:1313/posts/test-post-please-ignore/</link>
+      <link>https://example.org/posts/test-post-please-ignore/</link>
       <pubDate>Fri, 21 Jun 2024 00:00:00 +0000</pubDate>
       
-      <guid>http://localhost:1313/posts/test-post-please-ignore/</guid>
+      <guid>https://example.org/posts/test-post-please-ignore/</guid>
       <description>an example to get you started</description>
-      <media:content xmlns:media="http://search.yahoo.com/mrss/" url="http://localhost:1313/posts/test-post-please-ignore/featured.png" />
+      <media:content xmlns:media="http://search.yahoo.com/mrss/" url="https://example.org/posts/test-post-please-ignore/featured.png" />
     </item>
     
     <item>
       <title>Test Writeup Please Ignore</title>
-      <link>http://localhost:1313/writeups/test-writeup-please-ignore/</link>
+      <link>https://example.org/writeups/test-writeup-please-ignore/</link>
       <pubDate>Fri, 21 Jun 2024 00:00:00 +0000</pubDate>
       
-      <guid>http://localhost:1313/writeups/test-writeup-please-ignore/</guid>
+      <guid>https://example.org/writeups/test-writeup-please-ignore/</guid>
       <description>an example to get you started</description>
-      <media:content xmlns:media="http://search.yahoo.com/mrss/" url="http://localhost:1313/writeups/test-writeup-please-ignore/featured.png" />
+      <media:content xmlns:media="http://search.yahoo.com/mrss/" url="https://example.org/writeups/test-writeup-please-ignore/featured.png" />
     </item>
     
     <item>
       <title>mikufanpage</title>
-      <link>http://localhost:1313/writeups/osu2024/mikufanpage/</link>
+      <link>https://example.org/writeups/osu2024/mikufanpage/</link>
       <pubDate>Sat, 09 Mar 2024 00:00:00 +0000</pubDate>
       
-      <guid>http://localhost:1313/writeups/osu2024/mikufanpage/</guid>
+      <guid>https://example.org/writeups/osu2024/mikufanpage/</guid>
       <description>Challenge Description: miku &amp;lt;3</description>
-      <media:content xmlns:media="http://search.yahoo.com/mrss/" url="http://localhost:1313/writeups/osu2024/mikufanpage/featured.png" />
+      <media:content xmlns:media="http://search.yahoo.com/mrss/" url="https://example.org/writeups/osu2024/mikufanpage/featured.png" />
     </item>
     
     <item>
       <title>nathan-on-osu</title>
-      <link>http://localhost:1313/writeups/osu2024/nathan-on-osu/</link>
+      <link>https://example.org/writeups/osu2024/nathan-on-osu/</link>
       <pubDate>Sat, 09 Mar 2024 00:00:00 +0000</pubDate>
       
-      <guid>http://localhost:1313/writeups/osu2024/nathan-on-osu/</guid>
+      <guid>https://example.org/writeups/osu2024/nathan-on-osu/</guid>
       <description>Challenge Description: Here&amp;rsquo;s an old screenshot of chat logs between sahuang and Nathan on hollow&amp;rsquo;s Windows machine, but a crucial part of the conversation seems to be cropped out&amp;hellip; Can you help to recover the flag from the future?</description>
-      <media:content xmlns:media="http://search.yahoo.com/mrss/" url="http://localhost:1313/writeups/osu2024/nathan-on-osu/featured.png" />
+      <media:content xmlns:media="http://search.yahoo.com/mrss/" url="https://example.org/writeups/osu2024/nathan-on-osu/featured.png" />
     </item>
     
     <item>
       <title>out-of-click</title>
-      <link>http://localhost:1313/writeups/osu2024/out-of-click/</link>
+      <link>https://example.org/writeups/osu2024/out-of-click/</link>
       <pubDate>Sat, 09 Mar 2024 00:00:00 +0000</pubDate>
       
-      <guid>http://localhost:1313/writeups/osu2024/out-of-click/</guid>
+      <guid>https://example.org/writeups/osu2024/out-of-click/</guid>
       <description>Challenge Description: I love playing this map but recently I noticed that some of the circles seem off.</description>
-      <media:content xmlns:media="http://search.yahoo.com/mrss/" url="http://localhost:1313/writeups/osu2024/out-of-click/featured.png" />
+      <media:content xmlns:media="http://search.yahoo.com/mrss/" url="https://example.org/writeups/osu2024/out-of-click/featured.png" />
     </item>
     
     <item>
       <title>volatile-map</title>
-      <link>http://localhost:1313/writeups/osu2024/volatile-map/</link>
+      <link>https://example.org/writeups/osu2024/volatile-map/</link>
       <pubDate>Sat, 09 Mar 2024 00:00:00 +0000</pubDate>
       
-      <guid>http://localhost:1313/writeups/osu2024/volatile-map/</guid>
+      <guid>https://example.org/writeups/osu2024/volatile-map/</guid>
       <description>Challenge Description: Hey osu players, our SOC team was informed that a group of spies from Mai Corp is trying to sabotage our infrastructure via their secret map in osu!</description>
-      <media:content xmlns:media="http://search.yahoo.com/mrss/" url="http://localhost:1313/writeups/osu2024/volatile-map/featured.png" />
+      <media:content xmlns:media="http://search.yahoo.com/mrss/" url="https://example.org/writeups/osu2024/volatile-map/featured.png" />
     </item>
     
     <item>
       <title>when-you-dont-see-it</title>
-      <link>http://localhost:1313/writeups/osu2024/when-you-dont-see-it/</link>
+      <link>https://example.org/writeups/osu2024/when-you-dont-see-it/</link>
       <pubDate>Sat, 09 Mar 2024 00:00:00 +0000</pubDate>
       
-      <guid>http://localhost:1313/writeups/osu2024/when-you-dont-see-it/</guid>
+      <guid>https://example.org/writeups/osu2024/when-you-dont-see-it/</guid>
       <description>Challenge Description: welcome to web!</description>
-      <media:content xmlns:media="http://search.yahoo.com/mrss/" url="http://localhost:1313/writeups/osu2024/when-you-dont-see-it/featured.png" />
+      <media:content xmlns:media="http://search.yahoo.com/mrss/" url="https://example.org/writeups/osu2024/when-you-dont-see-it/featured.png" />
     </item>
     
   </channel>

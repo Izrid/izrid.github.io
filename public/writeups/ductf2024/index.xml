@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>DUCTF2024 on izrid.github.io</title>
+    <link>https://example.org/writeups/ductf2024/</link>
+    <description>Recent content in DUCTF2024 on izrid.github.io</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en</language>
+    <copyright>© 2025 Izrid</copyright>
+    <lastBuildDate>Sun, 21 Jul 2024 00:00:00 +0000</lastBuildDate><atom:link href="https://example.org/writeups/ductf2024/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>back to the jungle</title>
+      <link>https://example.org/writeups/ductf2024/back-to-the-jungle/</link>
+      <pubDate>Sun, 21 Jul 2024 00:00:00 +0000</pubDate>
+      
+      <guid>https://example.org/writeups/ductf2024/back-to-the-jungle/</guid>
+      <description>Challenge Description: Did MC Fat Monke just drop a new track?</description>
+      <media:content xmlns:media="http://search.yahoo.com/mrss/" url="https://example.org/writeups/ductf2024/back-to-the-jungle/featured.png" />
+    </item>
+    
+    <item>
+      <title>Sun Zi&#39;s Perfect Math Class</title>
+      <link>https://example.org/writeups/ductf2024/sun-zis-perfect-math-class/</link>
+      <pubDate>Sun, 21 Jul 2024 00:00:00 +0000</pubDate>
+      
+      <guid>https://example.org/writeups/ductf2024/sun-zis-perfect-math-class/</guid>
+      <description>Challenge Description: Everybody, Sunzi&amp;rsquo;s math class is about to begin!</description>
+      <media:content xmlns:media="http://search.yahoo.com/mrss/" url="https://example.org/writeups/ductf2024/sun-zis-perfect-math-class/featured.png" />
+    </item>
+    
+    <item>
+      <title>tldr please summarise</title>
+      <link>https://example.org/writeups/ductf2024/tldr-please-summarise/</link>
+      <pubDate>Sun, 21 Jul 2024 00:00:00 +0000</pubDate>
+      
+      <guid>https://example.org/writeups/ductf2024/tldr-please-summarise/</guid>
+      <description>Challenge Description: I thought I was being 1337 by asking AI to help me solve challenges, now I have to reinstall Windows again.</description>
+      <media:content xmlns:media="http://search.yahoo.com/mrss/" url="https://example.org/writeups/ductf2024/tldr-please-summarise/featured.png" />
+    </item>
+    
+    <item>
+      <title>Wacky Recipe</title>
+      <link>https://example.org/writeups/ductf2024/wacky-recipe/</link>
+      <pubDate>Sun, 21 Jul 2024 00:00:00 +0000</pubDate>
+      
+      <guid>https://example.org/writeups/ductf2024/wacky-recipe/</guid>
+      <description>Challenge Description: Our Cyber Chef has been creating some wacky recipes recently, though he has been rather protective of his secret ingredients.</description>
+      <media:content xmlns:media="http://search.yahoo.com/mrss/" url="https://example.org/writeups/ductf2024/wacky-recipe/featured.png" />
+    </item>
+    
+  </channel>
+</rss>

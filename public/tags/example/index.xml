@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Example on izrid.github.io</title>
+    <link>https://example.org/tags/example/</link>
+    <description>Recent content in Example on izrid.github.io</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en</language>
+    <copyright>© 2025 Izrid</copyright>
+    <lastBuildDate>Fri, 21 Jun 2024 00:00:00 +0000</lastBuildDate><atom:link href="https://example.org/tags/example/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Test Post Please Ignore</title>
+      <link>https://example.org/posts/test-post-please-ignore/</link>
+      <pubDate>Fri, 21 Jun 2024 00:00:00 +0000</pubDate>
+      
+      <guid>https://example.org/posts/test-post-please-ignore/</guid>
+      <description>an example to get you started</description>
+      <media:content xmlns:media="http://search.yahoo.com/mrss/" url="https://example.org/posts/test-post-please-ignore/featured.png" />
+    </item>
+    
+    <item>
+      <title>Test Writeup Please Ignore</title>
+      <link>https://example.org/writeups/test-writeup-please-ignore/</link>
+      <pubDate>Fri, 21 Jun 2024 00:00:00 +0000</pubDate>
+      
+      <guid>https://example.org/writeups/test-writeup-please-ignore/</guid>
+      <description>an example to get you started</description>
+      <media:content xmlns:media="http://search.yahoo.com/mrss/" url="https://example.org/writeups/test-writeup-please-ignore/featured.png" />
+    </item>
+    
+  </channel>
+</rss>

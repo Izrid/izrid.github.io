@@ -2,11 +2,11 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>number mashing on izrid.github.io</title>
-    <link>https://example.org/writeups/ductf2024/number-mashing/</link>
+    <link>http://localhost:1313/writeups/ductf2024/number-mashing/</link>
     <description>Recent content in number mashing on izrid.github.io</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
     <copyright>© 2025 Izrid</copyright>
-    <lastBuildDate>Sun, 21 Jul 2024 00:00:00 +0000</lastBuildDate><atom:link href="https://example.org/writeups/ductf2024/number-mashing/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Sun, 21 Jul 2024 00:00:00 +0000</lastBuildDate><atom:link href="http://localhost:1313/writeups/ductf2024/number-mashing/index.xml" rel="self" type="application/rss+xml" />
   </channel>
 </rss>

@@ -2,30 +2,30 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Web on izrid.github.io</title>
-    <link>https://example.org/tags/web/</link>
+    <link>http://localhost:1313/tags/web/</link>
     <description>Recent content in Web on izrid.github.io</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
     <copyright>© 2025 Izrid</copyright>
-    <lastBuildDate>Sat, 09 Mar 2024 00:00:00 +0000</lastBuildDate><atom:link href="https://example.org/tags/web/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Sat, 09 Mar 2024 00:00:00 +0000</lastBuildDate><atom:link href="http://localhost:1313/tags/web/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>mikufanpage</title>
-      <link>https://example.org/writeups/osu2024/mikufanpage/</link>
+      <link>http://localhost:1313/writeups/osu2024/mikufanpage/</link>
       <pubDate>Sat, 09 Mar 2024 00:00:00 +0000</pubDate>
       
-      <guid>https://example.org/writeups/osu2024/mikufanpage/</guid>
+      <guid>http://localhost:1313/writeups/osu2024/mikufanpage/</guid>
       <description>Challenge Description: miku &amp;lt;3</description>
-      <media:content xmlns:media="http://search.yahoo.com/mrss/" url="https://example.org/writeups/osu2024/mikufanpage/featured.png" />
+      <media:content xmlns:media="http://search.yahoo.com/mrss/" url="http://localhost:1313/writeups/osu2024/mikufanpage/featured.png" />
     </item>
     
     <item>
       <title>when-you-dont-see-it</title>
-      <link>https://example.org/writeups/osu2024/when-you-dont-see-it/</link>
+      <link>http://localhost:1313/writeups/osu2024/when-you-dont-see-it/</link>
       <pubDate>Sat, 09 Mar 2024 00:00:00 +0000</pubDate>
       
-      <guid>https://example.org/writeups/osu2024/when-you-dont-see-it/</guid>
+      <guid>http://localhost:1313/writeups/osu2024/when-you-dont-see-it/</guid>
       <description>Challenge Description: welcome to web!</description>
-      <media:content xmlns:media="http://search.yahoo.com/mrss/" url="https://example.org/writeups/osu2024/when-you-dont-see-it/featured.png" />
+      <media:content xmlns:media="http://search.yahoo.com/mrss/" url="http://localhost:1313/writeups/osu2024/when-you-dont-see-it/featured.png" />
     </item>
     
   </channel>

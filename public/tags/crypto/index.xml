@@ -2,20 +2,20 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Crypto on izrid.github.io</title>
-    <link>https://example.org/tags/crypto/</link>
+    <link>http://localhost:1313/tags/crypto/</link>
     <description>Recent content in Crypto on izrid.github.io</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
     <copyright>© 2025 Izrid</copyright>
-    <lastBuildDate>Sun, 21 Jul 2024 00:00:00 +0000</lastBuildDate><atom:link href="https://example.org/tags/crypto/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Sun, 21 Jul 2024 00:00:00 +0000</lastBuildDate><atom:link href="http://localhost:1313/tags/crypto/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Sun Zi&#39;s Perfect Math Class</title>
-      <link>https://example.org/writeups/ductf2024/sun-zis-perfect-math-class/</link>
+      <link>http://localhost:1313/writeups/ductf2024/sun-zis-perfect-math-class/</link>
       <pubDate>Sun, 21 Jul 2024 00:00:00 +0000</pubDate>
       
-      <guid>https://example.org/writeups/ductf2024/sun-zis-perfect-math-class/</guid>
+      <guid>http://localhost:1313/writeups/ductf2024/sun-zis-perfect-math-class/</guid>
       <description>Challenge Description: Everybody, Sunzi&amp;rsquo;s math class is about to begin!</description>
-      <media:content xmlns:media="http://search.yahoo.com/mrss/" url="https://example.org/writeups/ductf2024/sun-zis-perfect-math-class/featured.png" />
+      <media:content xmlns:media="http://search.yahoo.com/mrss/" url="http://localhost:1313/writeups/ductf2024/sun-zis-perfect-math-class/featured.png" />
     </item>
     
   </channel>

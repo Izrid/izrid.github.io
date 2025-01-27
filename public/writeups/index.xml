@@ -2,20 +2,20 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Writeups on izrid.github.io</title>
-    <link>http://localhost:1313/writeups/</link>
+    <link>https://example.org/writeups/</link>
     <description>Recent content in Writeups on izrid.github.io</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
     <copyright>© 2025 Izrid</copyright>
-    <lastBuildDate>Sun, 21 Jul 2024 00:00:00 +0000</lastBuildDate><atom:link href="http://localhost:1313/writeups/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Sun, 21 Jul 2024 00:00:00 +0000</lastBuildDate><atom:link href="https://example.org/writeups/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Test Writeup Please Ignore</title>
-      <link>http://localhost:1313/writeups/test-writeup-please-ignore/</link>
+      <link>https://example.org/writeups/test-writeup-please-ignore/</link>
       <pubDate>Fri, 21 Jun 2024 00:00:00 +0000</pubDate>
       
-      <guid>http://localhost:1313/writeups/test-writeup-please-ignore/</guid>
+      <guid>https://example.org/writeups/test-writeup-please-ignore/</guid>
       <description>an example to get you started</description>
-      <media:content xmlns:media="http://search.yahoo.com/mrss/" url="http://localhost:1313/writeups/test-writeup-please-ignore/featured.png" />
+      <media:content xmlns:media="http://search.yahoo.com/mrss/" url="https://example.org/writeups/test-writeup-please-ignore/featured.png" />
     </item>
     
   </channel>

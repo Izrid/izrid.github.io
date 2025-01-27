@@ -2,30 +2,30 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Misc on izrid.github.io</title>
-    <link>http://localhost:1313/tags/misc/</link>
+    <link>https://example.org/tags/misc/</link>
     <description>Recent content in Misc on izrid.github.io</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
     <copyright>© 2025 Izrid</copyright>
-    <lastBuildDate>Sun, 21 Jul 2024 00:00:00 +0000</lastBuildDate><atom:link href="http://localhost:1313/tags/misc/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Sun, 21 Jul 2024 00:00:00 +0000</lastBuildDate><atom:link href="https://example.org/tags/misc/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>tldr please summarise</title>
-      <link>http://localhost:1313/writeups/ductf2024/tldr-please-summarise/</link>
+      <link>https://example.org/writeups/ductf2024/tldr-please-summarise/</link>
       <pubDate>Sun, 21 Jul 2024 00:00:00 +0000</pubDate>
       
-      <guid>http://localhost:1313/writeups/ductf2024/tldr-please-summarise/</guid>
+      <guid>https://example.org/writeups/ductf2024/tldr-please-summarise/</guid>
       <description>Challenge Description: I thought I was being 1337 by asking AI to help me solve challenges, now I have to reinstall Windows again.</description>
-      <media:content xmlns:media="http://search.yahoo.com/mrss/" url="http://localhost:1313/writeups/ductf2024/tldr-please-summarise/featured.png" />
+      <media:content xmlns:media="http://search.yahoo.com/mrss/" url="https://example.org/writeups/ductf2024/tldr-please-summarise/featured.png" />
     </item>
     
     <item>
       <title>Wacky Recipe</title>
-      <link>http://localhost:1313/writeups/ductf2024/wacky-recipe/</link>
+      <link>https://example.org/writeups/ductf2024/wacky-recipe/</link>
       <pubDate>Sun, 21 Jul 2024 00:00:00 +0000</pubDate>
       
-      <guid>http://localhost:1313/writeups/ductf2024/wacky-recipe/</guid>
+      <guid>https://example.org/writeups/ductf2024/wacky-recipe/</guid>
       <description>Challenge Description: Our Cyber Chef has been creating some wacky recipes recently, though he has been rather protective of his secret ingredients.</description>
-      <media:content xmlns:media="http://search.yahoo.com/mrss/" url="http://localhost:1313/writeups/ductf2024/wacky-recipe/featured.png" />
+      <media:content xmlns:media="http://search.yahoo.com/mrss/" url="https://example.org/writeups/ductf2024/wacky-recipe/featured.png" />
     </item>
     
   </channel>

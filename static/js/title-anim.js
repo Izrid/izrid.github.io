@@ -34,6 +34,8 @@ document.addEventListener("DOMContentLoaded", () => {
     updateScramble();
   }
 
+  scrambleText(titleElement, finalText, scrambleDuration);
+
   function startAnimationLoop() {
     setInterval(() => {
       scrambleText(titleElement, finalText, scrambleDuration);

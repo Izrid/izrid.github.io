@@ -459,6 +459,8 @@ jQuery(document).ready(function($) {
         });
     }
 
+    var _isMobile = ('ontouchstart' in window);
+
     var _browserName = (function() {
         var ua = navigator.userAgent;
         if (/Edg\//.test(ua)) return 'edge';
@@ -474,6 +476,71 @@ jQuery(document).ready(function($) {
 
     function buildPrompt(browser) {
         return _promptPrefix + browser + _promptSuffix;
+    }
+
+    function showMobilePosts(initialCollection) {
+        var overlay = document.getElementById('mpo-overlay');
+        if (!overlay) {
+            overlay = document.createElement('div');
+            overlay.id = 'mpo-overlay';
+            overlay.innerHTML =
+                '<div class="mpo-header">' +
+                  '<button class="mpo-back" id="mpo-back">&#8592; back</button>' +
+                  '<span class="mpo-title" id="mpo-title">posts</span>' +
+                  '<button class="mpo-close" id="mpo-close">&#10005; close</button>' +
+                '</div>' +
+                '<div class="mpo-content" id="mpo-content"></div>';
+            document.body.appendChild(overlay);
+
+            document.getElementById('mpo-close').addEventListener('click', function() {
+                overlay.style.display = 'none';
+            });
+        }
+
+        function renderCategories() {
+            var content = document.getElementById('mpo-content');
+            var back = document.getElementById('mpo-back');
+            document.getElementById('mpo-title').textContent = 'posts';
+            back.style.visibility = 'hidden';
+            content.innerHTML = '';
+            Object.keys(collections).forEach(function(cat) {
+                var count = collections[cat].length;
+                var card = document.createElement('button');
+                card.className = 'mpo-card';
+                card.innerHTML =
+                    '<span class="mpo-cat-name">' + cat + '</span>' +
+                    '<span class="mpo-meta">' + count + ' post' + (count !== 1 ? 's' : '') + '</span>';
+                card.addEventListener('click', function() { renderCollection(cat); });
+                content.appendChild(card);
+            });
+        }
+
+        function renderCollection(cat) {
+            var content = document.getElementById('mpo-content');
+            var back = document.getElementById('mpo-back');
+            document.getElementById('mpo-title').textContent = cat;
+            back.style.visibility = 'visible';
+            back.onclick = renderCategories;
+            content.innerHTML = '';
+            (collections[cat] || []).forEach(function(post) {
+                var card = document.createElement('a');
+                card.className = 'mpo-card mpo-post';
+                card.href = '/posts/' + post.filename + '/';
+                card.innerHTML =
+                    '<span class="mpo-post-title">' + post.title + '</span>' +
+                    '<span class="mpo-meta">' + post.date +
+                    (post.tags && post.tags.length ? ' &middot; ' + post.tags.join(', ') : '') +
+                    '</span>';
+                content.appendChild(card);
+            });
+        }
+
+        overlay.style.display = 'flex';
+        if (initialCollection && collections[initialCollection.toLowerCase()]) {
+            renderCollection(initialCollection.toLowerCase());
+        } else {
+            renderCategories();
+        }
     }
 
     var _term = $('body').terminal(function(command, term) {
@@ -684,7 +751,9 @@ jQuery(document).ready(function($) {
                 break;
             case 'posts':
             case 'ls':
-                if (commands.length > 1) {
+                if (_isMobile) {
+                    showMobilePosts(commands.length > 1 ? commands[1] : null);
+                } else if (commands.length > 1) {
                     catCollection(term, commands[1]);
                 } else {
                     posts(term);
@@ -745,50 +814,16 @@ jQuery(document).ready(function($) {
             }
         },
         autocompleteMenu: !('ontouchstart' in window),
-        completion: ('ontouchstart' in window) ? false : Object.keys(commands)
+        completion: Object.keys(commands)
 
     });
-
-    var _isMobile = ('ontouchstart' in window);
 
     _term.find('textarea').attr({
         autocorrect: 'off',
         autocapitalize: 'none',
         autocomplete: 'off',
-        spellcheck: 'false',
-        inputmode: 'text',
-        enterkeyhint: 'send'
+        spellcheck: 'false'
     });
-
-    if (_isMobile) {
-        // Android IME fires 'input' with inputType 'insertReplacementText' when
-        // word prediction replaces/finalises a word (e.g. on space). Intercept
-        // this in the capture phase before jQuery Terminal processes it.
-        _term.find('textarea')[0].addEventListener('input', function(e) {
-            if (e.inputType === 'insertReplacementText' || e.inputType === 'insertCompositionText') {
-                e.stopImmediatePropagation();
-                // Re-insert the data as a plain insertText event so the terminal
-                // treats it as normal typing rather than a completion trigger.
-                var data = e.data || '';
-                if (data) {
-                    var te = document.createEvent('InputEvent');
-                    te.initEvent('input', true, true);
-                    Object.defineProperty(te, 'data', { value: data });
-                    Object.defineProperty(te, 'inputType', { value: 'insertText' });
-                    e.target.dispatchEvent(te);
-                }
-            }
-        }, true);
-
-        // Android 'compositionend' can fire with a trailing newline when the
-        // user taps space to confirm a word. Strip any trailing newline from
-        // the composed text before the terminal sees the event.
-        _term.find('textarea')[0].addEventListener('compositionend', function(e) {
-            if (e.data && e.data.endsWith('\n')) {
-                e.stopImmediatePropagation();
-            }
-        }, true);
-    }
 
     if (navigator.brave) {
         navigator.brave.isBrave().then(function(isBrave) {

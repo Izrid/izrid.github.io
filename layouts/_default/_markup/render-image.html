@@ -1,0 +1,5 @@
+{{- $dest := .Destination -}}
+{{- if not (strings.HasPrefix $dest "http") -}}
+  {{- $dest = print .Page.RelPermalink (strings.TrimPrefix "./" $dest) -}}
+{{- end -}}
+<img src="{{ $dest }}" alt="{{ .Text }}"{{ with .Title }} title="{{ . }}"{{ end }} style="max-width: 100%; height: auto;" />

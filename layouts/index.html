@@ -744,7 +744,7 @@ jQuery(document).ready(function($) {
                 return false;
             }
         },
-        autocompleteMenu: true,
+        autocompleteMenu: !('ontouchstart' in window),
         completion: Object.keys(commands)
 
     });

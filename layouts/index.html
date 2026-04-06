@@ -745,16 +745,50 @@ jQuery(document).ready(function($) {
             }
         },
         autocompleteMenu: !('ontouchstart' in window),
-        completion: Object.keys(commands)
+        completion: ('ontouchstart' in window) ? false : Object.keys(commands)
 
     });
+
+    var _isMobile = ('ontouchstart' in window);
 
     _term.find('textarea').attr({
         autocorrect: 'off',
         autocapitalize: 'none',
         autocomplete: 'off',
-        spellcheck: 'false'
+        spellcheck: 'false',
+        inputmode: 'text',
+        enterkeyhint: 'send'
     });
+
+    if (_isMobile) {
+        // Android IME fires 'input' with inputType 'insertReplacementText' when
+        // word prediction replaces/finalises a word (e.g. on space). Intercept
+        // this in the capture phase before jQuery Terminal processes it.
+        _term.find('textarea')[0].addEventListener('input', function(e) {
+            if (e.inputType === 'insertReplacementText' || e.inputType === 'insertCompositionText') {
+                e.stopImmediatePropagation();
+                // Re-insert the data as a plain insertText event so the terminal
+                // treats it as normal typing rather than a completion trigger.
+                var data = e.data || '';
+                if (data) {
+                    var te = document.createEvent('InputEvent');
+                    te.initEvent('input', true, true);
+                    Object.defineProperty(te, 'data', { value: data });
+                    Object.defineProperty(te, 'inputType', { value: 'insertText' });
+                    e.target.dispatchEvent(te);
+                }
+            }
+        }, true);
+
+        // Android 'compositionend' can fire with a trailing newline when the
+        // user taps space to confirm a word. Strip any trailing newline from
+        // the composed text before the terminal sees the event.
+        _term.find('textarea')[0].addEventListener('compositionend', function(e) {
+            if (e.data && e.data.endsWith('\n')) {
+                e.stopImmediatePropagation();
+            }
+        }, true);
+    }
 
     if (navigator.brave) {
         navigator.brave.isBrave().then(function(isBrave) {

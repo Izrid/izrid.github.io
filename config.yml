@@ -1,0 +1,75 @@
+baseURL: "https://izrid.github.io/"
+languageCode: "en-us"
+title: "izrid"
+theme: "terminalcv"
+
+taxonomies:
+  category: categories
+  tag: tags
+
+params:
+  blog: true
+  source: true
+
+  greetingbanner: |2
+     ██▓▒███████▒ ██▀███   ██▓▓█████▄
+    ▓██▒▒ ▒ ▒ ▄▀░▓██ ▒ ██▒▓██▒▒██▀ ██▌
+    ▒██▒░ ▒ ▄▀▒░ ▓██ ░▄█ ▒▒██▒░██   █▌
+    ░██░  ▄▀▒   ░▒██▀▀█▄  ░██░░▓█▄   ▌
+    ░██░▒███████▒░██▓ ▒██▒░██░░▒████▓ 
+    ░▓  ░▒▒ ▓░▒░▒░ ▒▓ ░▒▓░░▓   ▒▒▓  ▒ 
+     ▒ ░░░▒ ▒ ░ ▒  ░▒ ░ ▒░ ▒ ░ ░ ▒  ▒ 
+     ▒ ░░ ░ ░ ░ ░  ░░   ░  ▒ ░ ░ ░  ░ 
+     ░    ░ ░       ░      ░     ░    
+     ░                      ░      
+
+  greetingbannercolor: green
+
+  greeting: |
+      Type 'help' for available commands.
+
+  prompt:
+    core:
+      text: "izrid@"
+      color: "green"
+    separator:
+      text: ":"
+    path:
+      text: "~$"
+      color: "white"
+    extra:
+      text: " "
+
+  whois:
+    details:
+      name: "Izrid"
+      profession: "Information Security Consultant"
+      description: "Occasional CTF player. Ocassional HTB enjoyer. Frequently doing ✨things✨"
+
+  customHeadCode: |
+    <style>
+      .terminal-output code { color: #5af; }
+      .terminal-output code::before,
+      .terminal-output code::after { content: '`'; color: #5af; }
+      .terminal-output pre code { color: inherit; }
+      .terminal-output pre code::before,
+      .terminal-output pre code::after { content: none; }
+      @keyframes bannerRainbow {
+        0%   { color: hsl(120, 100%, 55%); }
+        25%  { color: hsl(180, 100%, 55%); }
+        50%  { color: hsl(270, 100%, 65%); }
+        75%  { color: hsl(300, 100%, 60%); }
+        100% { color: hsl(120, 100%, 55%); }
+      }
+      .banner-line {
+        display: block;
+        white-space: pre;
+        font-weight: bold;
+        animation: bannerRainbow 4s linear infinite;
+      }
+    </style>
+
+  social:
+    details:
+      - name: "GitHub"
+        url: "https://github.com/izrid"

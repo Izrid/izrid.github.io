@@ -1,0 +1,13 @@
+{{ define "main" }}
+Type <strong>cat &lt;filename&gt;</strong> to read a post<br>
+---<br>
+<br>
+{{ range .Pages.ByDate.Reverse }}
+<strong>Filename:</strong> {{ strings.TrimSuffix "/" (strings.TrimPrefix "/posts/" .RelPermalink) }}<br>
+<strong>Date:</strong> {{ .Date.Format "January 2, 2006" }}<br>
+{{ if .Params.tags }}<strong>Tags:</strong> {{ range .Params.tags }}{{ . }} {{ end }}<br>{{ end }}
+<br>
+{{ .Title }}<br>
+<br>
+{{ end }}
+{{ end }}

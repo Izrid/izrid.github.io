@@ -1,0 +1,759 @@
+{{ define "body" }}
+<script>
+jQuery(document).ready(function($) {
+    var animation = false;
+
+    var commands = {
+        help: "shows help",
+        less: "Use less as output method",
+        whois: "list basic details",
+        {{ if .Site.Params.social }}
+        social: "list social networks",
+        {{ end }}
+        {{ if .Site.Params.work }}
+        work: "list work experience",
+        {{ end }}
+        {{ if .Site.Params.education }}
+        education: "list education",
+        {{ end }}
+        {{ if .Site.Params.skills }}
+        skills: "list core skills",
+        {{ end }}
+        {{ if .Site.Params.softSkills }}
+        softskills: "list soft skills",
+        {{ end }}
+        {{ if .Site.Params.languages }}
+        languages: "list spoken languages",
+        {{ end }}
+        {{ if .Site.Params.projects }}
+        projects: "list projects",
+        {{ end }}
+        {{ if .Site.Params.publications }}
+        publications: "list publications",
+        {{ end }}
+        {{ if .Site.Params.certifications }}
+            certifications: "list certifications",
+        {{ end }}
+        {{ if .Site.Params.startxLocation }}
+            startx: "starts graphical environment",
+        {{ end }}
+        {{ if .Site.Params.misc }}
+            {{ .Site.Params.misc.commandName | default "other" }}: "{{.Site.Params.misc.title }}",
+        {{ end }}
+        {{ if not .Site.Params.Source }}
+            source: "shows details about template powering this website",
+        {{ end }}
+        {{ if .Site.Params.version }}
+            version: "Current version",
+        {{ end }}
+        {{ if .Site.Params.exitLocation }}
+            exit: "exit the terminal",
+        {{ end }}
+        {{ if .Site.Params.blog }}
+        posts: "list collections, or 'posts <name>' to view a collection",
+        {{ if .Site.Params.listLS }}
+        ls: "list collections",
+        {{ end }}
+        cat: "open a post (cat <filename>)",
+        {{ end }}
+        home: "clear screen and return to start",
+        all: "Show all details about me",
+    };
+
+    function progressBar(number) {
+        var barLength = Math.round(number / 10);
+        var barFilled = Array(barLength + 1).join("&#9611;");
+        var barBlank= Array(11 - barLength).join("&#9617;");
+
+        return barFilled + barBlank
+    }
+
+    // Calculate the tabbing to keep commands and descriptions aligned in the help message
+    function padKey(key, length) {
+        return key + ' '.repeat(length - key.length);
+    }
+
+    function commandsHelp() {
+        let longestKeyLength = Math.max(...Object.keys(commands).map(key => key.length));
+
+        let helpText = ""
+        for (let key in commands) {
+            if (commands.hasOwnProperty(key)) {
+                helpText += ` ${padKey(key, longestKeyLength)}\t${commands[key]}\n`
+            }
+        }
+        return helpText
+    }
+
+    var help = '\n[[b;white;]usage:]\n' +
+                '\n <command> - execute the command\n' +
+                ' less <command> - use less to display the output\n\n' +
+                '\n[[b;white;]Available commands:]\n' +
+               commandsHelp();
+
+    var whois = [
+    {{ with .Site.Params.whois.details }}
+        '[[b;grey;]Alias:]\t\t\t{{ .name }}\n' +
+        '[[b;grey;]Profession:]\t\t{{ .profession }}\n' +
+        '[[b;grey;]Description:]\t{{ .description }}\n' +
+        {{ if .email }}
+        '[[b;grey;]Email:]\t\t\t{{ .email }}\n' +
+        {{ end }}
+        {{ if .homelink }}
+        '[[b;grey;]Homepage:]\t\t{{ .homelink }}\n' +
+        {{ end }}
+        // {{ if .description }}
+        // '{{ .description }}' +
+        // {{ end }}
+        '\r',
+    {{ end }}
+    ];
+
+    function social() {
+        var hideName = false;
+        let sMap = {
+            {{ with .Site.Params.social.details }}
+                {{ range. }}
+                {{ .name }}: "{{ .url }}",
+                {{ end }}
+            {{ end }}
+        };
+
+        {{ if .Site.Params.social.settings.hideName }}
+        hideName = true
+        {{ end }}
+        socialText = []
+        for (let key in sMap) {
+            if (sMap.hasOwnProperty(key)) {
+                if (hideName) {
+                    socialText.push(sMap[key]);
+                } else {
+                    let longestKeyLength = Math.max(...Object.keys(sMap).map(key => key.length));
+                    socialText.push(`${padKey(key, longestKeyLength)}\t${sMap[key]}`)
+                };
+            }
+        }
+
+        return socialText
+    };
+
+    function posts(term) {
+        $.ajax({
+            url: "posts/",
+            type: 'GET',
+            success: function(data) {
+                term.echo(data, {raw: true});
+            },
+            error: function() {
+                term.echo("Error: Could not load posts data");
+            }
+        });
+    };
+
+    function catPost(term, postdir) {
+        url = "/posts/" + postdir + "/";
+        $.ajax({
+            url: url,
+            type: 'GET',
+            success: function(data) {
+                term.echo(data, {raw: true});
+            },
+            error: function() {
+                term.echo("Error: Could not load post " + postdir);
+            }
+        });
+    }
+
+    var collections = {
+        {{ range .Site.Taxonomies.categories.Alphabetical }}
+        {{- $urlSlug := strings.TrimSuffix "/" (strings.TrimPrefix "/categories/" .Page.RelPermalink) }}
+        "{{ $urlSlug }}": [
+            {{ range .Pages.ByDate.Reverse }}
+            {
+                filename: "{{ strings.TrimSuffix "/" (strings.TrimPrefix "/posts/" .RelPermalink) }}",
+                title: "{{ .Title }}",
+                date: "{{ .Date.Format "January 2, 2006" }}",
+                tags: [{{ range .Params.tags }}"{{ . }}",{{ end }}]
+            },
+            {{ end }}
+        ],
+        {{ end }}
+    };
+
+    function catCollection(term, collection) {
+        var key = collection.toLowerCase();
+        if (!collections.hasOwnProperty(key)) {
+            term.echo("Error: collection '" + collection + "' not found. Type 'posts' to see available collections.");
+            return;
+        }
+        var postList = collections[key];
+        var html = "Type <strong>cat &lt;filename&gt;</strong> to read a post<br>---<br><br>";
+        postList.forEach(function(post) {
+            html += "<strong>Filename:</strong> " + post.filename + "<br>";
+            html += "<strong>Date:</strong> " + post.date + "<br>";
+            if (post.tags && post.tags.length > 0) {
+                html += "<strong>Tags:</strong> " + post.tags.join(" ") + "<br>";
+            }
+            html += "<br>" + post.title + "<br><br>";
+        });
+        term.echo(html, {raw: true});
+    }
+
+    var certifications = [
+    {{ with .Site.Params.certifications.details }}
+        {{ range . }}
+            '---\n' +
+            '[[b;{{ .color | default "grey" }};]{{ .certName }}]\n' +
+            '{{ .date }}\n' +
+            {{ if .company }}
+            '{{ .company }}\n' +
+            {{ end }}
+            {{ if .description }}
+            '{{ .description }}\n' +
+            {{ end }}
+            {{ if .badge }}
+            'Badge: \t{{ .badge }}\n' +
+            {{ end }}
+            '\r',
+        {{ end }}
+    {{ end }}
+    ];
+
+    var work = [
+    {{ with .Site.Params.work.details }}
+        {{ range .}}
+            '---\n' +
+            '[[b;{{ .color | default "grey" }};]{{ .jobTitle }}]\n' +
+            '{{ .company }}\n' +
+            '{{ .location}}\n' +
+            '{{ .date }}\n' +
+            '\n' +
+            '{{ .description }}' +
+            '\r',
+        {{ end }}
+    {{ end }}
+    ];
+
+    var education = [
+    {{ with .Site.Params.education.details }}
+        {{ range . }}
+            '---\n' +
+            '[[b;{{ .color | default "grey" }};]{{ .courseName }}]\n' +
+            '{{ .date }}\n' +
+            {{ if .description }}
+                "{{ .description }}\n" +
+            {{ end }}
+            "\r",
+        {{ end }}
+    {{ end }}
+    ];
+
+    var projects = [
+    {{ with .Site.Params.projects.details }}
+        {{ range .}}
+            '---\n' +
+            '[[b;{{ .color | default "grey" }};]{{ .title }}]\n' +
+            '{{ .date }}\n' +
+            '{{ .link }}\n' +
+            {{ if .description }}
+            '{{ .description }}\n' +
+            {{ end }}
+            "\r",
+      {{ end }}
+    {{ end }}
+    ];
+
+    var publications = [
+    {{ with .Site.Params.publications.details }}
+        {{ range .}}
+            '---\n' +
+            '[[b;{{ .color | default "grey" }};]{{ .title }}]\n' +
+            {{ if .authors }}
+            '{{ .authors }}\n' +
+            {{ end }}
+            {{ if .venue }}
+            '{{ .venue }}\n' +
+            {{ end }}
+            '{{ .date }}\n' +
+            {{ if .link }}
+            '{{ .link }}\n' +
+            {{ end }}
+            {{ if .description }}
+            '{{ .description }}\n' +
+            {{ end }}
+            "\r",
+      {{ end }}
+    {{ end }}
+    ];
+
+    var skills = [
+    {{ with .Site.Params.skills.details }}
+        {{ range . }}
+            '[[b;{{ .color | default "grey" }};]{{ .name }}:]\n' +
+            progressBar({{ .percentage }}) +
+            '{{ .percentage }}' + '%\n' +
+            {{ if .description }}
+            '{{ .description }}\n' +
+            {{ end }}
+            '\r',
+        {{ end }}
+    {{ end }}
+    ];
+
+    var softSkills = [
+    {{ with .Site.Params.softSkills.details }}
+        {{ range . }}
+            '[[b;{{ .color | default "grey" }};]{{ .name }}:]\n' +
+            progressBar({{ .percentage }}) +
+            '{{ .percentage }}' + '%\n' +
+            {{ if .description }}
+            '{{ .description }}\n' +
+            {{ end }}
+            '\r',
+        {{ end }}
+    {{ end }}
+    ];
+
+    var languages = [
+    {{ with .Site.Params.languages.details }}
+        {{ range . }}
+            '[[b;{{ .color | default "grey" }};]{{ .name }}:]\n' +
+            progressBar({{ .percentage }})+
+            '{{ .percentage }}' + '%\n' +
+            {{ if .description }}
+            '{{ .description }}\n' +
+            {{ end }}
+            '\r',
+        {{ end }}
+    {{ end }}
+    ];
+
+    var misc = [
+         {{ with .Site.Params.misc }}
+        '[[b;{{ .titleColor }};]{{ .title }}]\n' +
+        '[[;{{ .contentColor }};]{{ .content }}]\n',
+         {{ end }}
+    ];
+
+    function colorFace(art) {
+        var lines = art.split('\n').map(function(line) {
+            var segs = [], match, re = /(\s+|\S+)/g;
+            while ((match = re.exec(line)) !== null) segs.push(match[0]);
+            var nonSpace = segs.filter(function(s) { return /\S/.test(s); });
+            var n = nonSpace.length, midIdx = Math.floor(n / 2), i = 0;
+            return segs.map(function(s) {
+                if (!/\S/.test(s)) return s;
+                var color = (n < 4 || i === 0 || i === n - 1 || i === midIdx) ? 'yellow' : 'white';
+                i++;
+                return '<span style="color:' + color + '">' + s + '</span>';
+            }).join('');
+        });
+        return '<div style="font-size:25%;line-height:1;font-family:inherit;white-space:pre;">' +
+               lines.join('\n') +
+               '</div>';
+    }
+
+    var source = colorFace(`
+                                                                                       
+                                              ÆÆÆÆÆÆÆÆ                                              
+                                    ÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆ                                     
+                                ÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆ                                
+                            ÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆ                            
+                         ÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆ                         
+                      ÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆ                       
+                    ÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆ                    
+                  ÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆ                  
+                ÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆ                
+               ÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆ               
+             ÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆ             
+            ÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆ            
+           ÆÆ                        ÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆ                            ÆÆÆÆÆÆÆÆÆ           
+          ÆÆÆ                         ÆÆÆÆÆÆÆÆÆÆÆÆÆ                             ÆÆÆÆÆÆÆÆÆÆ          
+         ÆÆÆ   ÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆ   ÆÆÆÆÆÆÆÆÆÆÆÆÆ   ÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆ   ÆÆÆÆÆÆÆÆÆÆ         
+        ÆÆÆÆ   ÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆ   ÆÆÆÆÆÆÆÆÆÆÆÆÆ  ÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆ   ÆÆÆÆÆÆÆÆÆÆÆ        
+       ÆÆÆÆÆ   ÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆ   ÆÆÆÆÆÆÆÆÆÆÆÆÆ  ÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆ   ÆÆÆÆÆÆÆÆÆÆÆÆ       
+       ÆÆÆÆÆ   ÆÆÆÆÆÆÆÆ   ÆÆÆÆÆÆÆÆÆ   ÆÆÆÆÆÆÆÆÆÆÆÆÆ   ÆÆÆÆÆÆÆÆ    ÆÆÆÆÆÆÆÆÆÆÆÆ   ÆÆÆÆÆÆÆÆÆÆÆÆ       
+      ÆÆÆÆÆÆ   ÆÆÆÆÆÆÆ     ÆÆÆÆÆÆÆÆ   ÆÆÆÆÆÆÆÆÆÆÆÆÆ   ÆÆÆÆÆÆÆÆ     ÆÆÆÆÆÆÆÆÆÆ   ÆÆÆÆÆÆÆÆÆÆÆÆÆÆ      
+      ÆÆÆÆÆÆ   ÆÆÆÆÆÆÆ     ÆÆÆÆÆÆÆÆ   ÆÆÆÆÆÆÆÆÆÆÆÆÆÆ   ÆÆÆÆÆÆÆ    ÆÆÆÆÆÆÆÆÆÆÆ   ÆÆÆÆÆÆÆÆÆÆÆÆÆÆ      
+     ÆÆÆÆÆÆÆÆ   ÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆ   ÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆ    ÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆ   ÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆ     
+     ÆÆÆÆÆÆÆÆ    ÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆ   ÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆ    ÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆ   ÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆ     
+     ÆÆÆÆÆÆÆÆÆ    ÆÆÆÆÆÆÆÆÆÆÆÆÆÆ   ÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆ    ÆÆÆÆÆÆÆÆÆÆÆÆÆ     ÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆ     
+    ÆÆÆÆÆÆÆÆÆÆÆÆ    ÆÆÆÆÆÆÆÆÆÆ    ÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆ      ÆÆÆÆÆÆÆ      ÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆ     
+    ÆÆÆÆÆÆÆÆÆÆÆÆÆ              ÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆ             ÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆ    
+    ÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆ       ÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆ    
+    ÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆ    
+    ÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆ     
+     ÆÆÆÆÆÆÆ                                                                  ÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆ     
+     ÆÆÆÆÆÆÆ                                                                  ÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆ     
+     ÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆ     
+      ÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆ      
+      ÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆ      
+       ÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆ       
+       ÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆ       
+        ÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆ        
+         ÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆ         
+          ÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆ          
+           ÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆ           
+            ÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆ            
+             ÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆ              
+               ÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆ               
+                ÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆ                
+                  ÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆ                  
+                    ÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆ                    
+                      ÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆ                       
+                         ÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆ                         
+                            ÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆ                            
+                                ÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆ                                
+                                     ÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆ                                     
+                                               ÆÆÆÆÆÆ                                               
+                                                                                                    
+                                                                                                    
+`) +
+                 '<span style="color:grey">Foundational inspiration found below</span><br>' +
+                 '<a href="https://github.com/coolapso/hugo-theme-terminalcv" target="_blank" style="color:var(--link-color,#37f)">https://github.com/coolapso/hugo-theme-terminalcv</a>';
+
+    var all = [
+        whois,
+        {{ if .Site.Params.social }}
+        social(),
+        {{ end }}
+        {{ if .Site.Params.work }}
+        work,
+        {{ end }}
+        {{ if .Site.Params.education }}
+        education,
+        {{ end }}
+        {{ if .Site.Params.skills }}
+        skills,
+        {{ end }}
+        {{ if .Site.Params.softSkills }}
+        softSkills,
+        {{ end }}
+        {{ if .Site.Params.languages }}
+        languages,
+        {{ end }}
+        {{ if .Site.Params.projects }}
+        projects,
+        {{ end }}
+        {{ if .Site.Params.publications }}
+        publications,
+        {{ end }}
+        {{ if .Site.Params.certifications }}
+        certifications,
+        {{ end }}
+        {{ if .Site.Params.misc }}
+        misc,
+        {{ end }}
+        {{ if .Site.Params.source }}
+        source,
+        {{ end }}
+    ]
+
+    function echoBanner(term) {
+        var lines = `{{ .Site.Params.greetingbanner }}`.split('\n').filter(function(l) { return l.length > 0; });
+        var numLines = lines.length;
+        lines.forEach(function(line, i) {
+            var delay = -(i / numLines * 8).toFixed(2);
+            var escaped = line.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+            term.echo('<span class="banner-line" style="animation-delay:' + delay + 's">' + escaped + '</span>', {raw: true});
+        });
+    }
+
+    var _browserName = (function() {
+        var ua = navigator.userAgent;
+        if (/Edg\//.test(ua)) return 'edge';
+        if (/OPR\/|Opera/.test(ua)) return 'opera';
+        if (/Firefox\//.test(ua)) return 'firefox';
+        if (/Chrome\//.test(ua)) return 'chrome';
+        if (/Safari\//.test(ua)) return 'safari';
+        return 'terminal';
+    })();
+
+    var _promptPrefix = '{{ with .Site.Params.prompt }}{{ with .core }}[[;{{ .beforeColor | default "grey" }};]{{ .before }}][[;{{ .color | default "grey" }};]{{ .text }}';
+    var _promptSuffix = '{{ .after }}]{{ end }}{{ with .separator }}[[;{{ .separatorColor | default "grey" }};]{{ .text }}]{{ end }}{{ with .path }}[[;{{ .beforeColor | default "grey" }};]{{ .before }}][[;{{ .color | default "grey" }};]{{ .text | default ":~$" }}][[;{{ .afterColor | default "grey" }};]{{ .after }}]{{ end }}{{ with .extra }}[[;{{ .color | default "grey" }};]{{ .text }}]{{ end }}{{ end }}';
+
+    function buildPrompt(browser) {
+        return _promptPrefix + browser + _promptSuffix;
+    }
+
+    var _term = $('body').terminal(function(command, term) {
+
+        var useLess = false;
+        {{if .Site.Params.useLess }}
+        useLess = true;
+        {{ end }}
+
+        function echoArray(array) {
+            if (useLess) {
+                term.less(array, {
+                    onExit: function () {
+                        term.set_command('');
+                        term.scroll_to_bottom();
+                    },
+                });
+            } else {
+                for (i = 0; i < array.length; i += 1) {
+                    term.echo(array[i]);
+                }
+            }
+        }
+        //Function used by StartX to draw the progressBar
+        function progress(percent, width) {
+            var size = Math.round(width*percent/100);
+            var left = '', taken = '', i;
+            for (i=size; i--;) {
+                taken += '=';
+            }
+            if (taken.length > 0) {
+                taken = taken.replace(/=$/, '>');
+            }
+            for (i=width-size; i--;) {
+                left += ' ';
+            }
+            return '[' + taken + left + '] ' + percent + '%';
+        }
+
+        function loading () {
+            var i = 0, size = 30;
+            prompt = term.get_prompt();
+            string = progress(0, size);
+            term.set_prompt(progress);
+            animation = true;
+            (function loop() {
+                string = progress(i++, size);
+                term.set_prompt(string);
+                if (i < 100) {
+                    timer = setTimeout(loop, 10);
+                } else {
+                    term.echo(progress(i, size) + ' [[b;green;]OK]').set_prompt(prompt);
+                    animation = false
+                }
+            })();
+        }
+
+        commands = command.split(/[ ]+/);
+        if (commands[0] == 'less') {
+            useLess = true;
+            commands.shift();
+        }
+
+        switch(commands[0]) {
+            case 'whois':
+                {{ if .Site.Params.whois.settings.useLess }}
+                useLess = true;
+                {{ end }}
+                echoArray(whois);
+                break;
+            {{ if .Site.Params.social }}
+            case 'social':
+                {{ if .Site.Params.social.settings.useLess }}
+                useLess = true;
+                {{ end }}
+                echoArray(social());
+                break;
+            {{ end }}
+            {{ if .Site.Params.work }}
+            case 'work':
+                {{ if .Site.Params.work.settings.useLess }}
+                useLess = true;
+                {{ end }}
+                echoArray(work);
+                break;
+            {{ end }}
+            {{ if .Site.Params.education }}
+            case 'education':
+                {{ if .Site.Params.education.settings.useLess }}
+                useLess = true;
+                {{ end }}
+                echoArray(education);
+                break;
+            {{ end }}
+            {{ if .Site.Params.skills }}
+            case 'skills':
+                {{ if .Site.Params.skills.settings.useLess }}
+                useLess = true;
+                {{ end }}
+                echoArray(skills);
+                break;
+            {{ end }}
+            {{ if .Site.Params.softSkills }}
+            case 'softskills':
+                {{ if .Site.Params.softskills.settings.useLess }}
+                useLess = true;
+                {{ end }}
+                echoArray(softSkills);
+                break;
+            {{ end }}
+            {{ if .Site.Params.languages }}
+            case 'languages':
+                {{ if .Site.Params.languages.settings.useLess }}
+                useLess = true;
+                {{ end }}
+                echoArray(languages);
+                break;
+            {{ end }}
+            {{ if .Site.Params.projects }}
+            case 'projects':
+                {{ if .Site.Params.projects.settings.useLess }}
+                useLess = true;
+                {{ end }}
+                echoArray(projects);
+                break;
+            {{ end }}
+            {{ if .Site.Params.publications }}
+            case 'publications':
+                {{ if .Site.Params.publications.settings.useLess }}
+                useLess = true;
+                {{ end }}
+                echoArray(publications);
+                break;
+            {{ end }}
+            case 'certifications':
+                {{ if .Site.Params.certifications.settings.useLess }}
+                useLess = true;
+                {{ end }}
+                echoArray(certifications);
+                break;
+            case '{{ .Site.Params.misc.commandName | default "misc"}}':
+                {{ if .Site.Params.misc.settings.useLess }}
+                useLess = true;
+                {{ end }}
+                echoArray(misc);
+                break;
+            case 'help':
+            case '?':
+                term.echo(help);
+                break;
+            case 'all':
+                {{ if .Site.Params.all.settings.useLess }}
+                useLess = true;
+                {{ end }}
+                all.flat(1).forEach(function(item) {
+                    if (item === source) {
+                        term.echo(source, {raw: true});
+                    } else {
+                        term.echo(item);
+                    }
+                });
+                break;
+            {{ if .Site.Params.startxLocation }}
+            case 'startx':
+                term.echo("loading ...");
+                loading();
+                setTimeout(function(){window.location = "{{ .Site.Params.startxLocation }}"}, 2000);
+                break;
+            {{ end }}
+            case ':(){:|:&};:':
+                term.echo("nice try");
+                break;
+            case 'source':
+                {{ if .Site.Params.misc.settings.useLess }}
+                useLess = true;
+                {{ end }}
+                term.echo(source, {raw: true});
+                break;
+            case 'exit':
+            {{ if .Site.Params.exitLocation }}
+                term.echo("terminating ... ");
+                loading();
+                setTimeout(function(){window.location = '{{ .Site.Params.exitLocation }}'}, 2000);
+                break;
+            {{ else }}
+                term.echo("Terminating session, thanks for visiting");
+                loading();
+                setTimeout(function() {
+                  term.pause();
+                  term.clear();
+                  term.echo("{{ .Site.Params.exitMessage }}");
+                }, 2000);
+                break;
+            {{ end }}
+            {{ if .Site.Params.version }}
+            case 'version':
+                term.echo("{{ .Site.Params.version }}");
+                break;
+            {{ end }}
+            {{ if .Site.Params.blog }}
+            case 'cat':
+                if (commands.length < 2) {
+                    term.echo("Usage: cat <filename>");
+                } else {
+                    var postdir = commands[1];
+                    catPost(term, postdir);
+                }
+                break;
+            case 'posts':
+            case 'ls':
+                if (commands.length > 1) {
+                    catCollection(term, commands[1]);
+                } else {
+                    posts(term);
+                }
+                break;
+            {{ end }}
+            case 'home':
+                term.clear();
+                {{ if .Site.Params.greetingbanner }}
+                echoBanner(term);
+                {{ end }}
+                term.echo(`[[b;{{ .Site.Params.greetingColor | default "white" }};]{{ .Site.Params.greeting }}]`);
+                break;
+            case '':
+                break;
+            default:
+                term.echo("\nunknown command: " + command + "\n" +
+                          "please type 'help' or '?' for a list of available commands\n");
+        }
+    }, {
+
+        {{ if .Site.Params.bootsequence }}
+          greetings: false,
+          onInit: function(term) {
+          term.pause();
+          term.typing('echo', 1, '{{ .Site.Params.bootsequence }}', function() {
+            term.clear();
+            {{ if .Site.Params.greetingbanner }}
+              echoBanner(term);
+              term.echo("[[b;{{ .Site.Params.greetingColor | default "white" }};]{{ .Site.Params.greeting }}]");
+            {{ else }}
+              term.echo("[[b;{{ .Site.Params.greetingColor | default "white" }};]{{ .Site.Params.greeting }}]");
+            {{ end }}
+          });
+          term.resume();
+          },
+        {{ else }}
+          greetings: false,
+          onInit: function(term) {
+            {{ if .Site.Params.greetingbanner }}
+            echoBanner(term);
+            {{ end }}
+            term.echo(`[[b;{{ .Site.Params.greetingColor | default "white" }};]{{ .Site.Params.greeting }}]`);
+          },
+        {{ end }}
+
+        prompt: buildPrompt(_browserName),
+
+        keydown: function(e, term) {
+            if (animation) {
+                if (e.which == 68 && e.ctrlKey) { // CTRL+D
+                    clearTimeout(timer);
+                    animation = false;
+                    term.echo(string + ' [[b;red;]FAIL]')
+                    .set_prompt(prompt);
+                }
+                return false;
+            }
+        },
+        autocompleteMenu: true,
+        completion: Object.keys(commands)
+
+    });
+
+    if (navigator.brave) {
+        navigator.brave.isBrave().then(function(isBrave) {
+            if (isBrave) _term.set_prompt(buildPrompt('brave'));
+        }).catch(function(){});
+    }
+});
+</script>
+{{ end }}

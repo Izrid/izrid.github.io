@@ -749,6 +749,13 @@ jQuery(document).ready(function($) {
 
     });
 
+    _term.find('textarea').attr({
+        autocorrect: 'off',
+        autocapitalize: 'none',
+        autocomplete: 'off',
+        spellcheck: 'false'
+    });
+
     if (navigator.brave) {
         navigator.brave.isBrave().then(function(isBrave) {
             if (isBrave) _term.set_prompt(buildPrompt('brave'));

@@ -67,84 +67,59 @@ params:
         font-weight: bold;
         animation: bannerRainbow 4s linear infinite;
       }
-      /* Mobile posts GUI overlay */
-      #mpo-overlay {
-        display: none;
-        position: fixed;
-        inset: 0;
-        background: #0d0d0d;
-        z-index: 9999;
-        flex-direction: column;
-        font-family: monospace;
-        color: #ccc;
-        overflow: hidden;
+      /* Mobile posts folder grid (rendered in terminal output) */
+      .mpo-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 0.1rem;
+        margin: 0.25rem 0;
       }
-      .mpo-header {
+      .mpo-folder {
         display: flex;
+        flex-direction: column;
         align-items: center;
-        justify-content: space-between;
-        background: #0d0d0d;
-        border-bottom: 1px solid #2a2a2a;
-        padding: 0.75rem 1rem;
-        flex-shrink: 0;
-      }
-      .mpo-title {
-        color: #4f4;
-        font-weight: bold;
-        font-size: 1.05em;
-        letter-spacing: 0.05em;
-      }
-      .mpo-back, .mpo-close {
         background: none;
-        font-family: inherit;
-        font-size: 0.9em;
-        padding: 0.45rem 0.9rem;
+        border: none;
         cursor: pointer;
-        border-radius: 3px;
-        min-width: 64px;
-        line-height: 1;
-      }
-      .mpo-back { border: 1px solid #4f4; color: #4f4; }
-      .mpo-close { border: 1px solid #f55; color: #f55; }
-      .mpo-content {
-        flex: 1;
-        overflow-y: auto;
-        padding: 1rem;
-        display: flex;
-        flex-direction: column;
-        gap: 0.6rem;
-      }
-      .mpo-card {
-        display: flex;
-        flex-direction: column;
-        background: #111;
-        border: 1px solid #2a2a2a;
-        border-radius: 4px;
-        padding: 0.9rem 1rem;
-        cursor: pointer;
-        text-align: left;
         font-family: inherit;
         color: inherit;
-        text-decoration: none;
-        min-height: 56px;
-        justify-content: center;
+        padding: 0.6rem 0.25rem;
         -webkit-tap-highlight-color: transparent;
+        width: 100%;
+        box-sizing: border-box;
       }
-      .mpo-card:active { border-color: #4f4; background: #181818; }
-      .mpo-cat-name {
+      .mpo-folder:active .mpo-art {
+        color: #7f7;
+        text-shadow: 0 0 12px rgba(68,255,68,0.6);
+      }
+      .mpo-folder:active .mpo-label { color: #ccc; }
+      .mpo-art {
+        font-family: inherit;
+        font-size: 0.62em;
         color: #4f4;
-        font-weight: bold;
-        font-size: 1em;
+        text-shadow: 0 0 6px rgba(68,255,68,0.3);
+        margin: 0;
+        line-height: 1.25;
+        white-space: pre;
+        display: block;
       }
-      .mpo-meta {
-        color: #555;
-        font-size: 0.8em;
-        margin-top: 0.25rem;
+      .mpo-label {
+        margin-top: 0.35rem;
+        font-size: 0.72em;
+        color: #777;
+        text-align: center;
+        display: block;
+        width: 100%;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
       }
-      .mpo-post-title {
-        color: #ddd;
-        font-size: 0.95em;
-        line-height: 1.35;
+      .mpo-hint {
+        display: block;
+        color: #3a3a3a;
+        font-size: 0.78em;
+        padding: 0.3rem 0 0.1rem;
+        font-style: italic;
       }
     </style>
 

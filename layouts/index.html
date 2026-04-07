@@ -478,69 +478,43 @@ jQuery(document).ready(function($) {
         return _promptPrefix + browser + _promptSuffix;
     }
 
-    function showMobilePosts(initialCollection) {
-        var overlay = document.getElementById('mpo-overlay');
-        if (!overlay) {
-            overlay = document.createElement('div');
-            overlay.id = 'mpo-overlay';
-            overlay.innerHTML =
-                '<div class="mpo-header">' +
-                  '<button class="mpo-back" id="mpo-back">&#8592; back</button>' +
-                  '<span class="mpo-title" id="mpo-title">posts</span>' +
-                  '<button class="mpo-close" id="mpo-close">&#10005; close</button>' +
-                '</div>' +
-                '<div class="mpo-content" id="mpo-content"></div>';
-            document.body.appendChild(overlay);
+    var _FOLDER_ART =
+        '   ______\n' +
+        '  /      \\___\n' +
+        ' |           |\n' +
+        ' |           |\n' +
+        ' |___________|';
 
-            document.getElementById('mpo-close').addEventListener('click', function() {
-                overlay.style.display = 'none';
-            });
-        }
+    function _mpoCard(dataAttr, dataVal, label) {
+        var safeAttr  = dataVal.replace(/"/g, '&quot;');
+        var safeLabel = label.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+        return '<button class="mpo-folder" data-' + dataAttr + '="' + safeAttr + '">' +
+               '<pre class="mpo-art">' + _FOLDER_ART + '</pre>' +
+               '<span class="mpo-label">' + safeLabel + '</span>' +
+               '</button>';
+    }
 
-        function renderCategories() {
-            var content = document.getElementById('mpo-content');
-            var back = document.getElementById('mpo-back');
-            document.getElementById('mpo-title').textContent = 'posts';
-            back.style.visibility = 'hidden';
-            content.innerHTML = '';
-            Object.keys(collections).forEach(function(cat) {
-                var count = collections[cat].length;
-                var card = document.createElement('button');
-                card.className = 'mpo-card';
-                card.innerHTML =
-                    '<span class="mpo-cat-name">' + cat + '</span>' +
-                    '<span class="mpo-meta">' + count + ' post' + (count !== 1 ? 's' : '') + '</span>';
-                card.addEventListener('click', function() { renderCollection(cat); });
-                content.appendChild(card);
-            });
-        }
+    function mobilePosts(term) {
+        var html = '<div class="mpo-grid">';
+        Object.keys(collections).forEach(function(cat) {
+            html += _mpoCard('cat', cat, cat);
+        });
+        html += '</div><div class="mpo-hint">Tap to view posts</div>';
+        term.echo(html, {raw: true});
+    }
 
-        function renderCollection(cat) {
-            var content = document.getElementById('mpo-content');
-            var back = document.getElementById('mpo-back');
-            document.getElementById('mpo-title').textContent = cat;
-            back.style.visibility = 'visible';
-            back.onclick = renderCategories;
-            content.innerHTML = '';
-            (collections[cat] || []).forEach(function(post) {
-                var card = document.createElement('a');
-                card.className = 'mpo-card mpo-post';
-                card.href = '/posts/' + post.filename + '/';
-                card.innerHTML =
-                    '<span class="mpo-post-title">' + post.title + '</span>' +
-                    '<span class="mpo-meta">' + post.date +
-                    (post.tags && post.tags.length ? ' &middot; ' + post.tags.join(', ') : '') +
-                    '</span>';
-                content.appendChild(card);
-            });
+    function mobileCatCollection(term, cat) {
+        var key = cat.toLowerCase();
+        if (!collections.hasOwnProperty(key)) {
+            term.echo("Error: collection '" + cat + "' not found. Type 'posts' to see available collections.");
+            return;
         }
-
-        overlay.style.display = 'flex';
-        if (initialCollection && collections[initialCollection.toLowerCase()]) {
-            renderCollection(initialCollection.toLowerCase());
-        } else {
-            renderCategories();
-        }
+        var html = '<div class="mpo-grid">';
+        collections[key].forEach(function(post) {
+            html += _mpoCard('filename', post.filename, post.title);
+        });
+        html += '</div><div class="mpo-hint">Tap to read</div>';
+        term.echo(html, {raw: true});
     }
 
     var _term = $('body').terminal(function(command, term) {
@@ -751,10 +725,14 @@ jQuery(document).ready(function($) {
                 break;
             case 'posts':
             case 'ls':
-                if (_isMobile) {
-                    showMobilePosts(commands.length > 1 ? commands[1] : null);
-                } else if (commands.length > 1) {
-                    catCollection(term, commands[1]);
+                if (commands.length > 1) {
+                    if (_isMobile) {
+                        mobileCatCollection(term, commands[1]);
+                    } else {
+                        catCollection(term, commands[1]);
+                    }
+                } else if (_isMobile) {
+                    mobilePosts(term);
                 } else {
                     posts(term);
                 }
@@ -823,6 +801,16 @@ jQuery(document).ready(function($) {
         autocapitalize: 'none',
         autocomplete: 'off',
         spellcheck: 'false'
+    });
+
+    $(document).on('click', '.mpo-folder', function() {
+        var cat      = $(this).data('cat');
+        var filename = $(this).data('filename');
+        if (cat !== undefined) {
+            mobileCatCollection(_term, cat);
+        } else if (filename !== undefined) {
+            _term.exec('cat ' + filename);
+        }
     });
 
     if (navigator.brave) {

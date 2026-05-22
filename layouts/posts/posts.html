@@ -1,11 +1,11 @@
 {{ define "main" }}
-Type <strong>posts &lt;name&gt;</strong> to list posts in a collection<br>
+Type <strong>cd &lt;name&gt;</strong> to enter specific collection of posts, then <strong>ls</strong> to view all posts<br>
 ---<br>
 <br>
 {{ range .Site.Taxonomies.categories.Alphabetical }}
 {{- $slug := strings.TrimSuffix "/" (strings.TrimPrefix "/categories/" .Page.RelPermalink) }}
 <strong>{{ .Term }}</strong> &mdash; {{ len .Pages }} posts<br>
-Command: posts {{ $slug }}<br>
+Command: cd {{ $slug }}<br>
 <br>
 {{ end }}
 {{ end }}

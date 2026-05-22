@@ -26,7 +26,7 @@ params:
   greetingbannercolor: green
 
   greeting: |
-      Type 'help' for available commands.
+      Type 'man' for available commands.
 
   prompt:
     core:
@@ -40,7 +40,7 @@ params:
     extra:
       text: " "
 
-  whois:
+  whoami:
     details:
       name: "Izrid"
       profession: "Information Security Consultant"
@@ -120,6 +120,148 @@ params:
         font-size: 0.78em;
         padding: 0.3rem 0 0.1rem;
         font-style: italic;
+      }
+      /* Post modal: ASCII-themed terminal window */
+      .modal-backdrop {
+        position: fixed;
+        inset: 0;
+        background: rgba(0, 0, 0, 0.75);
+        display: none;
+        align-items: center;
+        justify-content: center;
+        z-index: 1000;
+        padding: 2rem;
+        box-sizing: border-box;
+      }
+      .modal-backdrop.open { display: flex; }
+      .modal-window {
+        background: #0a0a0a;
+        border: none;
+        border-radius: 0;
+        box-shadow: 0 0 30px rgba(68, 255, 68, 0.25);
+        width: min(90ch, 100%);
+        max-height: 100%;
+        display: flex;
+        flex-direction: column;
+        overflow: hidden;
+        font-family: inherit;
+        position: relative;
+      }
+      .modal-side {
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        width: 1ch;
+        color: #4f4;
+        font-family: inherit;
+        font-size: 1em;
+        line-height: 1;
+        white-space: pre;
+        overflow: hidden;
+        pointer-events: none;
+        user-select: none;
+      }
+      .modal-side-left { left: 0; }
+      .modal-side-right { right: 0; }
+      .modal-titlebar, .modal-footer {
+        display: flex;
+        align-items: center;
+        color: #4f4;
+        font-size: 1em;
+        font-family: inherit;
+        white-space: pre;
+        flex: 0 0 auto;
+        user-select: none;
+        line-height: 1;
+      }
+      .modal-titlebar > *, .modal-footer > * {
+        line-height: 1;
+        font-size: inherit;
+        vertical-align: baseline;
+      }
+      .modal-deco { flex: 0 0 auto; white-space: pre; }
+      .modal-fill {
+        flex: 1 1 0;
+        overflow: hidden;
+        min-width: 0;
+        white-space: nowrap;
+        text-overflow: clip;
+      }
+      .modal-title {
+        font-weight: bold;
+        flex: 0 0 auto;
+        color: #4f4;
+      }
+      .modal-close {
+        background: none;
+        border: none;
+        color: #4f4;
+        font-family: inherit;
+        cursor: pointer;
+        padding: 0;
+        margin: 0;
+        flex: 0 0 auto;
+      }
+      .modal-close:hover { color: #fff; text-shadow: 0 0 8px #4f4; }
+      .modal-hint {
+        color: #888;
+        flex: 0 0 auto;
+      }
+      .modal-window:focus { outline: none; }
+      .modal-content {
+        padding: 1.5rem 2rem;
+        overflow-y: auto;
+        color: #ddd;
+        line-height: 1.65;
+        font-size: 0.95em;
+      }
+      .modal-content h1,
+      .modal-content h2,
+      .modal-content h3,
+      .modal-content h4 {
+        color: #4f4;
+        margin-top: 1.4em;
+        margin-bottom: 0.5em;
+        line-height: 1.3;
+      }
+      .modal-content h1 { font-size: 1.6em; margin-top: 0; }
+      .modal-content h2 { font-size: 1.3em; }
+      .modal-content h3 { font-size: 1.15em; }
+      .modal-content p { margin: 0.8em 0; }
+      .modal-content a { color: #5af; text-decoration: underline; }
+      .modal-content a:hover { color: #7cf; }
+      .modal-content img {
+        max-width: 100%;
+        height: auto;
+        display: block;
+        margin: 1em auto;
+        border: 1px solid #222;
+        border-radius: 2px;
+      }
+      .modal-content code {
+        color: #5af;
+        background: rgba(255,255,255,0.07);
+        padding: 0.05em 0.35em;
+        border-radius: 2px;
+      }
+      .modal-content pre code { background: none; padding: 0; color: #ddd; }
+      .modal-content hr { border: none; border-top: 1px dashed #333; margin: 1.5em 0; }
+      .modal-content ul, .modal-content ol { padding-left: 1.5em; margin: 0.6em 0; }
+      .modal-content li { margin: 0.3em 0; }
+      .modal-content blockquote {
+        border-left: 3px solid #4f4;
+        padding-left: 1em;
+        margin: 1em 0;
+        color: #aaa;
+      }
+      @media (max-width: 600px) {
+        .modal-backdrop { padding: 0; }
+        .modal-window {
+          height: 100%;
+          max-height: 100%;
+        }
+        .modal-content { padding: 1rem; }
+        .modal-hint { font-size: 0.75em; padding: 0 0.2em; }
       }
     </style>
 

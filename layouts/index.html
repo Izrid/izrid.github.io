@@ -152,7 +152,15 @@ jQuery(document).ready(function($) {
             url: url,
             type: 'GET',
             success: function(data) {
-                openModal('cat ' + postdir, data);
+                var cat = null;
+                for (var c in collections) {
+                    if (!collections.hasOwnProperty(c)) continue;
+                    if (collections[c].some(function(p) { return p.filename === postdir; })) {
+                        cat = c;
+                        break;
+                    }
+                }
+                openModal((cat ? cat + '/' : '') + postdir, data);
             },
             error: function() {
                 term.echo("Error: Could not load post " + postdir);
@@ -775,31 +783,33 @@ jQuery(document).ready(function($) {
         spellcheck: 'false'
     });
 
-    var _modalFill = '-'.repeat(150);
-    var _modalSide = '|<br>'.repeat(150);
+    var _modalFillTop = '▀'.repeat(150);
+    var _modalFillBot = '▄'.repeat(150);
+    var _modalSideL   = '▌<br>'.repeat(150);
+    var _modalSideR   = '▐<br>'.repeat(150);
     var $modal = $(
         '<div class="modal-backdrop" role="dialog" aria-modal="true">' +
             '<div class="modal-window" tabindex="-1">' +
-                '<div class="modal-side modal-side-left" aria-hidden="true">' + _modalSide + '</div>' +
-                '<div class="modal-side modal-side-right" aria-hidden="true">' + _modalSide + '</div>' +
+                '<div class="modal-side modal-side-left" aria-hidden="true">' + _modalSideL + '</div>' +
+                '<div class="modal-side modal-side-right" aria-hidden="true">' + _modalSideR + '</div>' +
                 '<div class="modal-titlebar">' +
-                    '<span class="modal-deco">+--[ </span>' +
+                    '<span class="modal-deco">▛▀▀[ </span>' +
                     '<span class="modal-title"></span>' +
                     '<span class="modal-deco"> ]</span>' +
-                    '<span class="modal-fill" aria-hidden="true">' + _modalFill + '</span>' +
+                    '<span class="modal-fill" aria-hidden="true">' + _modalFillTop + '</span>' +
                     '<span class="modal-deco">[ </span>' +
                     '<button class="modal-close" aria-label="Close">X</button>' +
-                    '<span class="modal-deco"> ]--+</span>' +
+                    '<span class="modal-deco"> ]▀▀▜</span>' +
                 '</div>' +
                 '<div class="modal-content"></div>' +
                 '<div class="modal-footer">' +
-                    '<span class="modal-deco">+--</span>' +
-                    '<span class="modal-fill" aria-hidden="true">' + _modalFill + '</span>' +
+                    '<span class="modal-deco">▙▄▄</span>' +
+                    '<span class="modal-fill" aria-hidden="true">' + _modalFillBot + '</span>' +
                     '<span class="modal-deco">[ </span>' +
                     '<span class="modal-hint">W up   S down   ESC close</span>' +
                     '<span class="modal-deco"> ]</span>' +
-                    '<span class="modal-fill" aria-hidden="true">' + _modalFill + '</span>' +
-                    '<span class="modal-deco">--+</span>' +
+                    '<span class="modal-fill" aria-hidden="true">' + _modalFillBot + '</span>' +
+                    '<span class="modal-deco">▄▄▟</span>' +
                 '</div>' +
             '</div>' +
         '</div>'

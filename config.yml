@@ -67,6 +67,10 @@ params:
         font-weight: bold;
         animation: bannerRainbow 4s linear infinite;
       }
+      .banner-drip {
+        width: fit-content;
+        margin: 0 auto;
+      }
       /* Mobile posts folder grid (rendered in terminal output) */
       .mpo-grid {
         display: grid;

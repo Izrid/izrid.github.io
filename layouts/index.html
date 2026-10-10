@@ -1,4 +1,6 @@
 {{ define "body" }}
+<script src="{{ "js/banner-drip.js" | relURL }}"></script>
+<script src="{{ "js/face3d.js" | relURL }}"></script>
 <script>
 jQuery(document).ready(function($) {
     var animation = false;
@@ -339,25 +341,7 @@ jQuery(document).ready(function($) {
          {{ end }}
     ];
 
-    function colorFace(art) {
-        var lines = art.split('\n').map(function(line) {
-            var segs = [], match, re = /(\s+|\S+)/g;
-            while ((match = re.exec(line)) !== null) segs.push(match[0]);
-            var nonSpace = segs.filter(function(s) { return /\S/.test(s); });
-            var n = nonSpace.length, midIdx = Math.floor(n / 2), i = 0;
-            return segs.map(function(s) {
-                if (!/\S/.test(s)) return s;
-                var color = (n < 4 || i === 0 || i === n - 1 || i === midIdx) ? 'yellow' : 'white';
-                i++;
-                return '<span style="color:' + color + '">' + s + '</span>';
-            }).join('');
-        });
-        return '<div style="font-size:25%;line-height:1;font-family:inherit;white-space:pre;">' +
-               lines.join('\n') +
-               '</div>';
-    }
-
-    var source = colorFace(`
+    var source = window.face3d(`
                                                                                        
                                               ÆÆÆÆÆÆÆÆ                                              
                                     ÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆÆ                                     
@@ -455,12 +439,7 @@ jQuery(document).ready(function($) {
 
     function echoBanner(term) {
         var lines = `{{ .Site.Params.greetingbanner }}`.split('\n').filter(function(l) { return l.length > 0; });
-        var numLines = lines.length;
-        lines.forEach(function(line, i) {
-            var delay = -(i / numLines * 8).toFixed(2);
-            var escaped = line.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
-            term.echo('<span class="banner-line" style="animation-delay:' + delay + 's">' + escaped + '</span>', {raw: true});
-        });
+        term.echo(window.bannerDrip(lines), {raw: true});
     }
 
     var _isMobile = ('ontouchstart' in window);
